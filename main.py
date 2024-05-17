@@ -25,9 +25,9 @@ MENU = {
 }
 
 resources = {
-    "water": 30,
-    "milk": 40,
-    "coffee": 100,
+    "water": 230,
+    "milk": 340,
+    "coffee": 1100,
     "money": 0
 }
 
@@ -35,9 +35,18 @@ prompto = False
 select_coffee = {}
 
 def check_and_update_resources(param):
-    water = resources["water"] >= param['ingredients']['water']
-    coffee = resources["coffee"] >= param['ingredients']['coffee']
-    milk = resources["milk"] >= param['ingredients']['milk']
+    water = True
+    coffee = True
+    milk = True
+    if 'milk' not in param['ingredients']:
+        water = resources["water"] >= param['ingredients']['water']
+        coffee = resources["coffee"] >= param['ingredients']['coffee']
+        # milk = resources["milk"] >= param['ingredients']['milk']
+    else:
+        water = resources["water"] >= param['ingredients']['water']
+        coffee = resources["coffee"] >= param['ingredients']['coffee']
+        milk = resources["milk"] >= param['ingredients']['milk']
+
     lists = [
         {'name': 'water', 'state': water},
         {'name': 'coffee', 'state': coffee},
@@ -45,12 +54,20 @@ def check_and_update_resources(param):
     ]
 
     if water and coffee and milk:
-        resources['water'] = resources["water"] - param['ingredients']['water']
-        resources['coffee'] = resources["coffee"] - param['ingredients']['coffee']
-        resources['milk'] = resources["milk"] - param['ingredients']['milk']
-        resources['cost'] += param['cost']
-        print('all true')
-        return True
+        if 'milk' not in param['ingredients']:
+            resources['water'] = resources["water"] - param['ingredients']['water']
+            resources['coffee'] = resources["coffee"] - param['ingredients']['coffee']
+            # resources['milk'] = resources["milk"] - param['ingredients']['milk']
+            resources['money'] += param['cost']
+            print('all true')
+            return True
+        else:
+            resources['water'] = resources["water"] - param['ingredients']['water']
+            resources['coffee'] = resources["coffee"] - param['ingredients']['coffee']
+            resources['milk'] = resources["milk"] - param['ingredients']['milk']
+            resources['money'] += param['cost']
+            print('all true')
+            return True
     else:
         for item in lists:
             if item['state'] == False:
