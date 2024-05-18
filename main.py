@@ -31,6 +31,8 @@ resources = {
     "money": 0
 }
 
+#continue here
+
 prompto = False
 select_coffee = {}
 
